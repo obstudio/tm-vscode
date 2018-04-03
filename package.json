@@ -20,6 +20,26 @@
                 "command": "extension.sayHello",
                 "title": "Hello World"
             }
+        ],
+        "languages": [
+            {
+                "id": "TextualMusic",
+                "aliases": [
+                    "Thulium Music"
+                ],
+                "extensions": [
+                    ".tm",
+                    ".tml"
+                ],
+                "configuration": "./src/tm-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "TextualMusic",
+                "scopeName": "source.tm",
+                "path": "./syntaxes/TextualMusic.tmLanguage.json"
+            }
         ]
     },
     "scripts": {
@@ -30,10 +50,10 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "tslint": "^5.8.0",
-        "@types/node": "^7.0.43",
+        "typescript": "^2.8.1",
+        "vscode": "^1.1.14",
+        "tslint": "^5.9.1",
+        "@types/node": "^9.6.1",
         "@types/mocha": "^2.2.42"
     }
 }

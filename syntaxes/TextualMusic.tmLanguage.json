@@ -1,0 +1,64 @@
+{
+	"name": "Thulium Music",
+	"scopeName": "source.tm",
+	"patterns": [
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#macro"
+		}
+	],
+	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"begin": "(^//)",
+					"beginCaptures": {
+						"1": {
+							"name": "comment.line.double-slash.tm"
+						}
+					},
+					"end": "(?=^)",
+					"contentName": "comment.line.double-slash.tm"
+				},
+				{
+					"begin": "<\\*",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.tm"
+						}
+					},
+					"end": "\\*>",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.tm"
+						}
+					},
+					"contentName": "punctuation.definition.comment.tm"
+				}
+			]
+		},
+		"macro": {
+			"patterns": [
+				{
+					"begin": "^# *Track",
+					"beginCaptures": {
+						"0": {
+							"name": "macro.definition.library.tm"
+						}
+					},
+					"end": "^(?=^#)",
+					"patterns": [
+						{
+							"include": "#content"
+						}
+					]
+				}
+			]
+		},
+		"content": {
+
+		}
+	}	
+}
