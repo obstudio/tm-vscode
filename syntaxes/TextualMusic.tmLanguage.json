@@ -3,13 +3,29 @@
 	"scopeName": "source.tm",
 	"patterns": [
 		{
-			"include": "#comment"
-		},
-		{
-			"include": "#macro"
+			"include": "#root"
 		}
 	],
 	"repository": {
+		"root": {
+			"patterns": [
+				{
+					"include": "#volta"
+				},
+				{
+					"include": "#instr"
+				},
+				{
+					"include": "#common"
+				},
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#lib"
+				}
+			]
+		},
 		"comment": {
 			"patterns": [
 				{
@@ -39,26 +55,389 @@
 				}
 			]
 		},
+		"lib": {
+			"patterns":[
+				{
+					"include": "#inc"
+				},
+				{
+					"include": "#macro"
+				},
+				{
+					"include": "#funcDef"
+				},
+				{
+					"include": "#chordDef"
+				},
+				{
+					"include": "#end"
+				}
+			]
+		},
 		"macro": {
 			"patterns": [
 				{
 					"begin": "^# *Track",
 					"beginCaptures": {
 						"0": {
-							"name": "macro.definition.library.tm"
+							"name": "block.macro.library.tm"
 						}
 					},
-					"end": "^(?=^#)",
+					"end": "(?=^#)",
 					"patterns": [
 						{
-							"include": "#content"
+							"include": "#common"
+						},
+						{
+							"match": "<:[A-Za-z\\d]+:>",
+							"name": "entry.macro.library.tm"
 						}
 					]
 				}
 			]
 		},
-		"content": {
-
+		"chordDef": {
+			"patterns": [
+				{
+					"begin": "^# *Chord",
+					"beginCaptures": {
+						"0": {
+							"name": "block.chord.library.tm"
+						}
+					},
+					"end": "(?=^#)",
+					"patterns": [
+						{
+							"begin": "^(?=[ac-wyzA-Z])",
+							"end": "$",
+							"patterns": [
+								{
+									"match": "^[ac-wyzA-Z]",
+									"name": "name.chord.library.tm"
+								},
+								{
+									"match": "\\t+[^\\t]+\\t+",
+									"name": "comment.chord.library.tm"
+								},
+								{
+									"match": "[^\\t]+(?=$)",
+									"name": "def.chord.library.tm"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		"funcDef": {
+			"patterns": [
+				{
+					"begin": "^# *Function",
+					"beginCaptures": {
+						"0": {
+							"name": "block.function.library.tm"
+						}
+					},
+					"end": "(?=^#)",
+					"patterns": [
+						{
+							"include": "source.js"
+						}
+					]
+				}
+			]
+		},
+		"inc": {
+			"patterns": [
+				{
+					"begin": "^# *Include",
+					"beginCaptures": {
+						"0": {
+							"name": "line.include.library.tm"
+						}
+					},
+					"end": "$",
+					"contentName": "body.include.library.tm"
+				}
+			]
+		},
+		"end": {
+			"patterns": [
+				{
+					"match": "^# *End",
+					"name": "block.any.library.tm"
+				}
+			]
+		},
+		"volta": {
+			"patterns": [
+				{
+					"match": "\\[(\\d+\\.)+\\]",
+					"name": "volta.section.common.tm"
+				}
+			]
+		},
+		"instr": {
+			"patterns": [
+				{
+					"match": "<[^*:].*>",
+					"name": "instr.track.common.tm"
+				}
+			]
+		},
+		"common": {
+			"patterns": [
+				{
+					"include": "#macroIndicator"
+				},
+				{
+					"include": "#subtrack"
+				},
+				{
+					"include": "#pedalPress"
+				},
+				{
+					"include": "#pedalRelease"
+				},
+				{
+					"include": "#tie"
+				},
+				{
+					"include": "#barline"
+				},
+				{
+					"include": "#note"
+				},
+				{
+					"include": "#func"
+				}
+			]
+		},
+		"macroIndicator": {
+			"patterns": [
+				{
+					"name": "macro.expression.common.tm",
+					"match": "@[A-Za-z\\d]+"
+				}
+			]
+		},
+		"pedalPress": {
+			"patterns": [
+				{
+					"name": "press.pedal.common.tm",
+					"match": "&"
+				}
+			]
+		},
+		"pedalRelease": {
+			"patterns": [
+				{
+					"name": "release.pedal.common.tm",
+					"match": "\\*"
+				}
+			]
+		},
+		"tie": {
+			"patterns": [
+				{
+					"name": "tie.common.tm",
+					"match": "\\^"
+				}
+			]
+		},
+		"barline": {
+			"patterns": [
+				{
+					"name": "barline.common.tm",
+					"match": ":\\|\\|:|:\\|\\||\\|\\|:|\\|\\||\\|"
+				}
+			]
+		},
+		"subtrack": {
+			"patterns": [
+				{
+					"begin": "({)(\\d+\\*)?",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.subtrack.tm"
+						},
+						"2": {
+							"name": "repeat.definition.subtrack.tm"
+						}
+					},
+					"end": "}",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.subtrack.tm"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#common"
+						},
+						{
+							"match": "\\\\\\d*:|\\/|\\\\",
+							"name": "repeat.definition.subtrack.tm"
+						}
+					]
+				}
+			]
+		},
+		"pitOp": {
+			"patterns": [
+				{
+					"match": "[',b#a-wyzA-Z]",
+					"name": "pitOp.note.common.tm"
+				},
+				{
+					"match": "[:>]",
+					"name": "durOp.note.common.tm"
+				}
+			]
+		},
+		"durOp": {
+			"patterns": [
+				{
+					"match": "[-_.=`:>]",
+					"name": "durOp.note.common.tm"
+				}
+			]
+		},
+		"degree": {
+			"patterns": [
+				{
+					"match": "[0-7x%]",
+					"name": "degree.note.common.tm"
+				}
+			]
+		},
+		"note": {
+			"patterns": [
+				{
+					"begin": "[0-7x%]",
+					"beginCaptures": {
+						"0": {
+							"name": "degree.note.common.tm"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#durOp"
+						},
+						{
+							"include": "#pitOp"
+						}
+					],
+					"end": "(?=[^$',b#a-wyzA-Z\\-_.=`:>])"
+				},
+				{
+					"begin": "\\[",
+					"end": "]([',b#\\-_.=`:>]*)",
+					"beginCaptures": {
+						"0": {
+							"name": "chord.note.common.tm"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "chord.note.common.tm"
+						},
+						"1": {
+							"patterns": [
+								{
+									"include": "#durOp"
+								},
+								{
+									"include": "#pitOp"
+								}
+							]
+						}
+					},
+					"patterns": [
+						{
+							"include": "#pitOp"
+						},
+						{
+							"include": "#degree"
+						}
+					]
+				}
+			]
+		},
+		"arg": {
+			"patterns": [
+				{
+					"include": "#subtrack"
+				},
+				{
+					"begin": "\"",
+					"end": "\"",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.string.common.tm"
+						}
+					},
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.string.common.tm"
+						}
+					},
+					"contentName": "body.string.common.tm"
+				},
+				{
+					"match": ",",
+					"name": "punctuation.function.common.tm"
+				},
+				{
+					"match": "\\d+\/\\d+|\\d+(\\.\\d+)?|Log2\\(\\d+\\)([+-]\\d+)?",
+					"name": "number.function.common.tm"
+				},
+				{
+					"begin": "\\[",
+					"end": "]",
+					"beginCaptures": {
+						"0": {
+							"name": "array.function.common.tm"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "array.function.common.tm"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#arg"
+						}
+					]
+				}
+			]
+		},
+		"func": {
+			"patterns": [
+				{
+					"begin": "(([A-Z][a-z]+)+)(\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "name.function.common.tm"
+						},
+						"3": {
+							"name": "punctuation.function.common.tm"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.function.common.tm"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#arg"
+						}
+					]
+				}
+			]
 		}
-	}	
+	}
 }
