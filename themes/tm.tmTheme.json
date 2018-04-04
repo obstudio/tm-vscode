@@ -1,0 +1,13 @@
+{
+    "name": "Thulium",
+    "tokenColors": [
+        {
+            "scope": [
+                "comment"
+            ],
+            "settings": {
+                "foreground": "#047c18ff"
+            }
+        }
+    ]
+}

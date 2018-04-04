@@ -42,16 +42,16 @@
 					"begin": "<\\*",
 					"beginCaptures": {
 						"0": {
-							"name": "punctuation.definition.comment.tm"
+							"name": "comment.punctuation.tm"
 						}
 					},
 					"end": "\\*>",
 					"endCaptures": {
 						"0": {
-							"name": "punctuation.definition.comment.tm"
+							"name": "comment.punctuation.tm"
 						}
 					},
-					"contentName": "punctuation.definition.comment.tm"
+					"contentName": "comment.tm"
 				}
 			]
 		},

@@ -40,6 +40,14 @@
                 "scopeName": "source.tm",
                 "path": "./syntaxes/TextualMusic.tmLanguage.json"
             }
+        ],
+        "themes": [
+            {
+                "label": "label",
+                "id": "Thulium Music",
+                "uiTheme": "vs-dark",
+                "path": "./themes/tm.tmTheme.json"
+            }
         ]
     },
     "scripts": {
